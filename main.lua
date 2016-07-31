@@ -19,7 +19,7 @@ function stringToDataItem(string)
 end
 
 -- readers
-require('reader_temp_hum')
+-- require('reader_temp_hum')
 -- require('reader_others')
 
 -- setup main events
