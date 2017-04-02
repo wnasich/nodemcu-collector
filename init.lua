@@ -3,7 +3,7 @@ print('init ...')
 -- Settings
 cfg = {}
 gpioPins ={}
-status = {}
+appStatus = {}
 timerAllocation = {}
 readerSlots = {}
 influxMeasurement = {}

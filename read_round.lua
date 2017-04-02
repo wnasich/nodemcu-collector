@@ -7,24 +7,24 @@ function doReadRound()
   local value
   
   -- Detect start of node
-  if (status.lastRoundSlot == 0) then
+  if (appStatus.lastRoundSlot == 0) then
     addToDataQueue(cfg.readerId.nodeEvent, '"start"')
   end
 
-  if (status.lastRoundSlot > #readerSlots) then
-    status.lastRoundSlot = 0
+  if (appStatus.lastRoundSlot > #readerSlots) then
+    appStatus.lastRoundSlot = 0
   end
-  status.lastRoundSlot = status.lastRoundSlot + 1
+  appStatus.lastRoundSlot = appStatus.lastRoundSlot + 1
 
   -- Node heap
-  if (readerSlots[status.lastRoundSlot] == cfg.readerId.nodeHeap) then
+  if (readerSlots[appStatus.lastRoundSlot] == cfg.readerId.nodeHeap) then
     value = node.heap()
     if (greaterThanDelta(cfg.readerId.nodeHeap, value)) then
       addToDataQueue(cfg.readerId.nodeHeap, value)
     end
 
   -- Wifi signal
-  elseif (readerSlots[status.lastRoundSlot] == cfg.readerId.wifiSignal) then
+  elseif (readerSlots[appStatus.lastRoundSlot] == cfg.readerId.wifiSignal) then
     value = wifi.sta.getrssi()
     if (value and greaterThanDelta(cfg.readerId.wifiSignal, value)) then
       addToDataQueue(cfg.readerId.wifiSignal, value)
@@ -32,7 +32,7 @@ function doReadRound()
   
   -- External temp and humidity
   --[[
-  elseif (readerSlots[status.lastRoundSlot] == cfg.readerId.externalTemp) then
+  elseif (readerSlots[appStatus.lastRoundSlot] == cfg.readerId.externalTemp) then
     -- This reader gets cfg.readerId.externalHum also
     local tempValue, humValue = readTempHum()
 
@@ -47,7 +47,7 @@ function doReadRound()
 
   -- Other sensor
   --[[
-  elseif (readerSlots[status.lastRoundSlot] == cfg.readerId.pressureHigh) then
+  elseif (readerSlots[appStatus.lastRoundSlot] == cfg.readerId.pressureHigh) then
     value = readPressure(cfg.readerId.pressureHigh)
     if (valud and greaterThanDelta(cfg.readerId.pressureHigh, value)) then
       addToDataQueue(cfg.readerId.pressureHigh, value)
@@ -61,10 +61,10 @@ function addToDataQueue(measurementId, value)
   local dataItem, deltaTz
 
   if (#dataQueue == 0) then
-    status.baseTz = rtctime.get()
+    appStatus.baseTz = rtctime.get()
     deltaTz = 0
   else
-    deltaTz = rtctime.get() - status.baseTz
+    deltaTz = rtctime.get() - appStatus.baseTz
   end
 
   dataItem = {deltaTz, measurementId, value}
@@ -82,13 +82,13 @@ function addToDataQueue(measurementId, value)
       dataItem = table.remove(dataQueue)
       if (dataItem) then
         dataItem = stringToDataItem(dataItem)
-        dataItem[1] = status.baseTz + dataItem[1]
+        dataItem[1] = appStatus.baseTz + dataItem[1]
         file.writeline(dataItemToString(dataItem))
       end
     end
     print('Items added to storage: ' .. itemsToCopy)
     file.close()
-    status.dataFileExists = true
+    appStatus.dataFileExists = true
   end
 end
 

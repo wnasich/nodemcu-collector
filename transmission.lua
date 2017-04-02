@@ -2,17 +2,17 @@ print('transmission ...')
 local currentDataBlock = {}
 
 function doTransmission()
-  if (status.transmitting) then
+  if (appStatus.transmitting) then
     return true
   end
-  status.transmitting = true
+  appStatus.transmitting = true
 
   local dataItem
 
   -- Fill up currrentDataBlock from data storage file
-  if (status.dataFileExists and #currentDataBlock == 0) then
+  if (appStatus.dataFileExists and #currentDataBlock == 0) then
     file.open(cfg.dataFileName)
-    file.seek('set', status.lastSeekPosition)
+    file.seek('set', appStatus.lastSeekPosition)
     print('Reading data storage')
     repeat
       dataItem = file.readline()
@@ -26,10 +26,10 @@ function doTransmission()
     if (dataItem == nil) then
       file.close()
       file.remove(cfg.dataFileName)
-      status.dataFileExists = false
-      status.lastSeekPosition = 0
+      appStatus.dataFileExists = false
+      appStatus.lastSeekPosition = 0
     else
-      status.lastSeekPosition = file.seek()
+      appStatus.lastSeekPosition = file.seek()
       file.close()
     end
   end
@@ -47,7 +47,7 @@ function doTransmission()
       dataItem = table.remove(dataQueue)
       if (dataItem) then
         dataItem = stringToDataItem(dataItem)
-        dataItem[1] = status.baseTz + dataItem[1]
+        dataItem[1] = appStatus.baseTz + dataItem[1]
         table.insert(currentDataBlock, dataItemToString(dataItem))
       end
     until (dataItem == nil or #currentDataBlock >= cfg.transmissionBlock)
@@ -55,10 +55,10 @@ function doTransmission()
 
   print('#dataQueue: ' .. #dataQueue .. ' #currentDataBlock: ' .. #currentDataBlock)
 
-  if (#currentDataBlock > 0 and status.wifiConnected) then
+  if (#currentDataBlock > 0 and appStatus.wifiConnected) then
     sendCurrentBlock()
   else
-    status.transmitting = false
+    appStatus.transmitting = false
   end
 end
 
@@ -71,16 +71,16 @@ function sendCurrentBlock()
 
   tcpSocket:on('disconnection', function(sck, c)
     print('Socket disconnection')
-    status.transmitting = false
+    appStatus.transmitting = false
 
-    if (#currentDataBlock == 0 and (#dataQueue > 0 or status.dataFileExists)) then
+    if (#currentDataBlock == 0 and (#dataQueue > 0 or appStatus.dataFileExists)) then
       node.task.post(node.task.MEDIUM_PRIORITY, doTransmission)
     end
   end)
 
   tcpSocket:on('reconnection', function(sck, c)
     print('Socket reconnection')
-    status.transmitting = false
+    appStatus.transmitting = false
   end)
 
   tcpSocket:on('receive', function(sck, response)
@@ -142,4 +142,4 @@ tmr.register(
 )
 tmr.start(timerAllocation.transmission)
 
-status.dataFileExists = file.exists(cfg.dataFileName)
+appStatus.dataFileExists = file.exists(cfg.dataFileName)

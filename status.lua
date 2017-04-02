@@ -1,4 +1,4 @@
-status = {
+appStatus = {
   wifiConnected = false,
   transmitting = false,
   lastRoundSlot = 0,
