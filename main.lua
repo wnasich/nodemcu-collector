@@ -17,6 +17,12 @@ function stringToDataItem(string)
   end
   return dataItem
 end
+function unrequire(m)
+  package.loaded[m] = nil
+  _G[m] = nil
+end
+
+-- drivers
 
 -- readers
 -- require('reader_temp_hum')
@@ -26,3 +32,12 @@ end
 require('transmission')
 require('read_round')
 
+-- Unrequire after 10 sec
+tmr.alarm(timerAllocation.initAlarm, 10000, tmr.ALARM_SINGLE, function()
+  unrequire('config')
+  unrequire('config_local')
+  unrequire('status')
+  unrequire('timers')
+  unrequire('reader_slots')
+  unrequire('pins')
+end)
