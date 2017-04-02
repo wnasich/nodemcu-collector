@@ -1,4 +1,4 @@
-print('main.lua')
+print('main ...')
 
 require('ntp_sync')
 
@@ -26,4 +26,3 @@ end
 require('transmission')
 require('read_round')
 
-print('/main.lua')

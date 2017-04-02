@@ -1,4 +1,4 @@
-print('ntp_sync.lua')
+print('ntp_sync ...')
 local hourCount = 0
 local sntpServerIp
 
@@ -39,5 +39,3 @@ end
 tmr.register(timerAllocation.syncSntp, 3600000, tmr.ALARM_AUTO, startNtpSync)
 tmr.start(timerAllocation.syncSntp)
 startNtpSync()
-
-print('/ntp_sync.lua')

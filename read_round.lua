@@ -1,4 +1,4 @@
-print('read_round.lua')
+print('read_round ...')
 
 -- For comparing against captureDelta
 local lastValues = {}
@@ -44,7 +44,7 @@ function doReadRound()
       addToDataQueue(cfg.readerId.externalHum, humValue)
     end
   ]]
-  
+
   -- Other sensor
   --[[
   elseif (readerSlots[status.lastRoundSlot] == cfg.readerId.pressureHigh) then
@@ -111,4 +111,3 @@ tmr.register(
   doReadRound
 )
 tmr.start(timerAllocation.readRound)
-print('/read_round.lua')

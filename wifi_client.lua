@@ -1,3 +1,5 @@
+print('wifi_client ...')
+
 wifi.setphymode(cfg.wifiMode)
 wifi.setmode(wifi.STATION)
 

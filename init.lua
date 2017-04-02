@@ -1,4 +1,4 @@
-print('init.lua')
+print('init ...')
 
 -- Settings
 cfg = {}
@@ -27,5 +27,3 @@ tmr.alarm(timerAllocation.initAlarm, 5000, tmr.ALARM_SINGLE, function()
     require('main')
   end
 end)
-
-print('/init.lua')

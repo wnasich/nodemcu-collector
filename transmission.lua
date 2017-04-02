@@ -1,4 +1,4 @@
-print('transmission.lua')
+print('transmission ...')
 local currentDataBlock = {}
 
 function doTransmission()
@@ -143,4 +143,3 @@ tmr.register(
 tmr.start(timerAllocation.transmission)
 
 status.dataFileExists = file.exists(cfg.dataFileName)
-print('/transmission.lua')
