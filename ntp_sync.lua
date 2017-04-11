@@ -3,7 +3,7 @@ local hourCount = 0
 local sntpServerIp
 
 function startNtpSync()
-  if (hourCount == 0 or appStatus.wifiConnected) then
+  if (hourCount == 0 and appStatus.wifiConnected) then
     net.dns.resolve(cfg.sntpServerName, function(sk, ip)
       if (ip) then
         print('Resolved ' .. cfg.sntpServerName .. ' to ' .. ip)
