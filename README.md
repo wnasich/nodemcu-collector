@@ -23,3 +23,9 @@ This project is intended as starting point for projects where you have to collec
 * Start sending basic measurements to InfluxDB, type on console: `require('main')`
 * Check data captured on InfluxDB. You will get these measurements: `node_heap`, `wifi_signal`, `node_event`
 
+### Donations
+```
+Bitcoin : 187w4iNVHX44y2PC96AuhP286aUKNjcrXV
+Litecoin: LVutsPn9jaoC6SScdxsGMM2uAMvPbjNZXq
+PIVX    : D81ZZt8jAvWQFaLhtx3f4ntstUCCYBcdne
+```
